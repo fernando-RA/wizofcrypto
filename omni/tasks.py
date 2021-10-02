@@ -1,17 +1,38 @@
-# bot.py
 import os
 
-import discord
+from apscheduler.schedulers.blocking import BlockingScheduler
 from dotenv import load_dotenv
+
+from src.telegram.bot import send_random_message
+from src.discord.bot import client
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-client = discord.Client()
+# TABLE OF CONTENTS
+# - CRON JOBS
+# - DISCORD BOT LISTENERS
+# - TELERGAM BOT LISTENERS
+# - TWITTER BOT LISTENERS
+
+# CRON JOBS
+sched = BlockingScheduler()
+
+
+@sched.scheduled_job('cron', hour=7, minute=30)
+def scheduled_job():
+    send_random_message()
+
+
+sched.start()
+
+
+# DISCORD BOT LISTENERS
 
 @client.event
 async def on_ready():
     print(f'{client.user.name} has connected to Discord!')
+
 
 @client.event
 async def on_member_join(member):
@@ -25,3 +46,7 @@ async def on_member_join(member):
     )
 
 client.run(TOKEN)
+
+# TELEGRAM BOT LISTENERS
+
+# TWITTER BOT LISTENERS

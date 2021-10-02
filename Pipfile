@@ -9,6 +9,10 @@ python-dotenv = "*"
 python-telegram-bot = "*"
 tweepy = "*"
 apscheduler = "*"
+django = "*"
+gunicorn = "*"
+"psycopg2-binary" = "*"
+"django-heroku" = "*"
 
 [dev-packages]
 autopep8 = "*"

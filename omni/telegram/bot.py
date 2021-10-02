@@ -11,6 +11,7 @@ BOT = telegram.Bot(token=os.getenv("TELEGRAM_TOKEN"))
 
 messages = {
     # hiring
+
     "hiring_general": "VACentral is hiring! Check out https://vacentral.org#roles to see all active roles!",
     "hiring_software": "Software Developer with experience in Typescript, Reactjs, Nextjs, Chakra-UI, Python and GraphQL? Apply today at https://vacentral.org#roles-software",
     "hiring_social": "Social Media Manager with experience in Tik Tok, Telegram, Instagram, Facebook, Twitter, Pinterest, or Linkedin? Apply today at https://vacentral.org#roles-social",
