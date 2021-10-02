@@ -2,8 +2,12 @@
 """ the bot package servers as a telegram adapter """
 import telegram
 import os
+import random
+from dotenv import load_dotenv
 
-BOT = telegram.Bot(token=os.env.TELEGRAM_TOKEN)
+load_dotenv()
+
+BOT = telegram.Bot(token=os.getenv("TELEGRAM_TOKEN"))
 
 messages = {
     # hiring
@@ -23,5 +27,10 @@ messages = {
 
 
 def send_message(text):
-    BOT.send_message(chat_id=os.env.TELEGRAM_CHAT_ID, text=text,
+    BOT.send_message(chat_id=os.getenv("TELEGRAM_CHAT_ID"), text=text,
                      parse_mode="Markdown", disable_web_page_preview=True)
+
+
+def send_random_message():
+    key, text = random.choice(list(messages.items()))
+    send_message(text=text)

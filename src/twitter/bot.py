@@ -24,14 +24,11 @@ lists = {
 
 # myStreamListener = MyStreamListener()
 # myStream = tweepy.Stream(auth=tweepy.OAuthHandler(
-#     os.env.TWITTER_CONSUMER_TOKEN, os.env.TWITTER_CONSUMER_SECRET), listener=myStreamListener())
+#     os.getenv.TWITTER_CONSUMER_TOKEN, os.getenv.TWITTER_CONSUMER_SECRET), listener=myStreamListener())
 
 auth = tweepy.OAuthHandler(
-    os.env.TWITTER_CONSUMER_TOKEN, os.env.TWITTER_CONSUMER_SECRET)
+    os.getenv("TWITTER_CONSUMER_TOKEN"), os.getenv("TWITTER_CONSUMER_SECRET"))
 
 
 def get_user_lists():
     return tweepy.api.get_lists(screen_name="vacentralorg")
-
-
-get_user_lists()
