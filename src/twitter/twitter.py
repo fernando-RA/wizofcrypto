@@ -1,0 +1,8 @@
+#!/usr/bin/python
+import tweepy
+import os
+
+
+class MyStreamListener(tweepy.StreamListener):
+    def on_status(self, status):
+        print(status.text)

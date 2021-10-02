@@ -1,8 +1,8 @@
 {
-  "name": "Omniserve",
+  "name": "Omni",
   "description": "Python Architecture for Build Lean SaaS.",
   "image": "heroku/python",
-  "repository": "https://github.com/lightning-leads/omniserve",
-  "keywords": ["python", "django"],
+  "repository": "https://github.com/lightning-leads/omni",
+  "keywords": ["python"],
   "addons": ["heroku-postgresql"]
 }
