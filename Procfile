@@ -1,1 +1,1 @@
-web: gunicorn gettingstarted.wsgi
+worker: python3 src/omni/discord-bot.py
