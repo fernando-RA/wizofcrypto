@@ -11,8 +11,8 @@ tweepy = "*"
 apscheduler = "*"
 django = "*"
 gunicorn = "*"
-"psycopg2-binary" = "*"
 "django-heroku" = "*"
+psycopg2 = "*"
 
 [dev-packages]
 autopep8 = "*"
