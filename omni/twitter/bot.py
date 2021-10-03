@@ -30,5 +30,8 @@ auth = tweepy.OAuthHandler(
     os.getenv("TWITTER_CONSUMER_TOKEN"), os.getenv("TWITTER_CONSUMER_SECRET"))
 
 
+# https://stackoverflow.com/questions/65091416/stream-a-twitter-list-using-tweepy
+# for each list, get members in list, and stream their tweets to our discord
+# how do we vet tweets before sharing?
 def get_user_lists():
     return tweepy.api.get_lists(screen_name="vacentralorg")
