@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   web:
     build:
       context: django/
@@ -42,6 +41,22 @@ services:
       - "6369:6369"
     networks:
       - local-omni
+  
+  celery: 
+    build: celery/
+    command: celery -A backend worker -l info
+    depends_on: 
+      - redis 
+    volumes:
+      - .:/code
+
+  celery-beat:
+    build: celery/
+    command: celery -A backend beat -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
 
 volumes:
   postgresql:
@@ -50,3 +65,5 @@ volumes:
 
 networks:
   local-omni:
+    external: true
+        name: profs    
