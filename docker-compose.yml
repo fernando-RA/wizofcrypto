@@ -43,7 +43,7 @@ services:
   
   celery: 
     build: celery/
-    command: celery -A backend worker -l info
+    command: celery --app ./django/backend worker -l info
     depends_on: 
       - redis 
     volumes:
@@ -51,7 +51,7 @@ services:
 
   celery-beat:
     build: celery/
-    command: celery -A backend beat -l info
+    command: celery --app ./django/backend beat -l info
     depends_on:
       - redis
     volumes:

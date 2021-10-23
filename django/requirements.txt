@@ -1,15 +1,4 @@
-discord.py
 python-dotenv
-python-telegram-bot
-tweepy
-apscheduler
 django
-gunicorn
-django-heroku
-psycopg2
-snscrape
-pandas
-numpy
 coverage
 django-celery-beat==2.2.0
-future
