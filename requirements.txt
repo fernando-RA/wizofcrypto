@@ -11,5 +11,3 @@ snscrape
 pandas
 numpy
 coverage
-django-celery-beat==2.2.0
-future

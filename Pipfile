@@ -14,8 +14,6 @@ gunicorn = "*"
 "django-heroku" = "*"
 psycopg2 = "*"
 snscrape = "*"
-pandas = "*"
-numpy = "*"
 
 [dev-packages]
 autopep8 = "*"

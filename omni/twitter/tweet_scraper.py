@@ -1,7 +1,6 @@
 
 # Imports
 import snscrape.modules.twitter as sntwitter
-import pandas as pd
 
 # Below are two ways of scraping using the Python Wrapper.
 # Comment or uncomment as you need. If you currently run the script as is it will scrape both queries
@@ -26,14 +25,7 @@ def search_from_specific_user(user):
         tweets_list1.append([without_links])
 
     # Creating a dataframe from the tweets list above
-    tweets_df1 = pd.DataFrame(tweets_list1, columns=['Tweet Content'])
-
-    # Display first 5 entries from dataframe
-    tweets_df1.head()
-
-    # Export dataframe into a CSV
-    tweets_df1.to_csv('user-tweets.csv', sep=';', index=False)
-
+    # TODO ->     https://stackoverflow.com/a/41786472
 
 def search_from_search_query(search_query):
     # Creating list to append tweet data to
@@ -47,5 +39,4 @@ def search_from_search_query(search_query):
             [tweet.date, tweet.id, tweet.content, tweet.user.username])
 
     # Creating a dataframe from the tweets list above
-    tweets_df2 = pd.DataFrame(tweets_list2, columns=[
-                            'Datetime', 'Tweet Id', 'Text', 'Username'])
+    # TODO 2 -> https://stackoverflow.com/a/66310138
