@@ -8,9 +8,7 @@ RUN echo "deb https://deb.debian.org/debian buster main" > /etc/apt/sources.list
 RUN apt-get update && apt-get -y dist-upgrade
 RUN apt install -y curl git gcc libpq-dev vim
 
-WORKDIR /opt/webapp
+WORKDIR /code
 COPY . .
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
-RUN ./manage.py collectstatic --no-input
-RUN python manage.py runserver

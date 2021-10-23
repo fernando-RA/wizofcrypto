@@ -12,5 +12,3 @@ WORKDIR /opt/webapp
 COPY . .
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
-RUN ./manage.py collectstatic --no-input
-RUN python manage.py runserver

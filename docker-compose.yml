@@ -6,15 +6,14 @@ services:
       context: django/
       args:
         SECRET_KEY: ${SECRET_KEY}
-
-    env_file: .env.development
+    env_file: .env
     volumes:
-      - ./:/opt/webapp
+      - ./:/code
     ports:
       - "8000:${PORT}"
     networks:
       - local-omni
-
+  
   postgres:
     image: postgres:12
     expose:
@@ -34,7 +33,7 @@ services:
       - "5433:5432"
     networks:
       - local-omni
-      
+  
   redis:
     image: redis
     ports:
@@ -48,15 +47,16 @@ services:
     depends_on: 
       - redis 
     volumes:
-      - .:/code
+      - ./:/code
 
   celery-beat:
     build: celery/
     command: celery -A backend beat -l info
-    volumes:
-      - .:/code
     depends_on:
       - redis
+    volumes:
+      - ./:/code
+
 
 volumes:
   postgresql:
@@ -65,5 +65,3 @@ volumes:
 
 networks:
   local-omni:
-    external: true
-        name: profs    

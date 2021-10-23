@@ -1,7 +1,5 @@
-from future import absolute_import
 import os
-from celery.schedules import crontab
-from . import celeryconfig
+from celery.schedules import crontab    
 from celery import Celery
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django.backend.settings")
