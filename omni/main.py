@@ -1,11 +1,13 @@
 from datetime import datetime
 from twitter.tweet_scraper import search_from_specific_user
 import reticker
+import collections
 
 extractor = reticker.TickerExtractor()
 
 arr_of_vip_accs = [
-    "fernand0aguilar"
+    "fernand0aguilar",
+    "PaikCapital",
 ]
 
 
@@ -20,20 +22,13 @@ def count_duplicates(arr):
 
 
 def get_tickers():
-    # here -> #duplicates are the counts, loop through the results and find dict where the key is the tickername and the count is how many times we find it in the arr
-    # after that we sort the dict by the counts and so the ones that habe highest counts goes to the top
-    # finally we send this to another function called prepare_email(ticker_scores):
     arr_with_all_results = []
     for user in arr_of_vip_accs:
-        single_user_search_results = search_from_specific_user(user)
-        for tweet in single_user_search_results:
+        for tweet in search_from_specific_user(user):
             for ticker in tweet:
                 arr_with_all_results.append(ticker)
-    duplicateFrequencies = {}
-    for i in set(arr_with_all_results):
-        duplicateFrequencies[i] = arr_with_all_results.count(i)
-    return duplicateFrequencies
-
+    return collections.Counter(arr_with_all_results).most_common()
+    # [('ONE', 4), ('FTM', 3), ('LUNA', 2), ('AVAX', 2), ('SOL', 2), ('SPELL', 2), ('TEST', 1), ('THIS', 1), ('JUST', 1), ('TESTIN', 1), ('CRV', 1), ('GYRO', 1), ('GN', 1), ('GM', 1), ('ETH', 1), ('AXS', 1), ('BTC', 1), ('SYN', 1), ('JOE', 1), ('SCRT', 1), ('ALL', 1), ('TIME', 1), ('HIGHS', 1)]
 
 
 def prepare_email():
@@ -43,9 +38,17 @@ def prepare_email():
     # 2. do it for the scored tickers of the day
 
     # get the guide to succinct stock market success on gumroad
-    # presale item <link> | # get your referral link
+    # presale item <link> | # get your referral link\
+    tickers_dict = [{
+        'name': t[0],
+        'score': t[1],
+        "stocktwits": 'https://stocktwits.com/search?q=' + t[0],
+        "yahoo": 'https://finance.yahoo.com/quote/' + t[0],
+        "stockcharts": 'https://stockcharts.com/h-sc/ui?s=' + t[0],
+        "otcmarkets": f'https://www.otcmarkets.com/stock/{t[0]}/overview',
+    } for t in get_tickers()]
 
-    return get_tickers()
+    return tickers_dict
 
 
 def get_emails():
