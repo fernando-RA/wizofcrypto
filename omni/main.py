@@ -47,7 +47,20 @@ def prepare_email():
         "stockcharts": 'https://stockcharts.com/h-sc/ui?s=' + t[0],
         "otcmarkets": f'https://www.otcmarkets.com/stock/{t[0]}/overview',
     } for t in get_tickers()]
-
+    # TODO
+        # COMPOSE EMAIL BODY
+        # MAKE A PRETTIFIED VERSION OF AN EMAIL BODY
+        # WRITE HTML BY HAND
+        # ADD THE CTA AND SHIT ONTO THE EMAIL
+    # HEADER -> 
+    #   OTC STOCK WINNER OF THE DAY
+    # BODY -> 
+    #   TOP 5
+    # Scores and LINKS
+    # SHILL BIG ASS CTA IN THE BOTTOM
+    
+    # RETURN ONE SINGLE EMAIL BODY
+    
     return tickers_dict
 
 
