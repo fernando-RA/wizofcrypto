@@ -1,5 +1,6 @@
 import os
 
+
 from apscheduler.schedulers.blocking import BlockingScheduler
 from dotenv import load_dotenv
 
