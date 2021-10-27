@@ -2,17 +2,17 @@ from datetime import datetime
 from twitter.tweet_scraper import search_from_specific_user
 import reticker
 import collections
+import sys
 
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from sendgrid.helpers.mail import Mail, Personalization, Email, Content, To, From
 
 extractor = reticker.TickerExtractor()
 
 arr_of_vip_accs = [
-    "PaikCapital",
-    'mn_goat_trader',
     'edgarinsider',
-    'GeniusTrader777'
+    'GeniusTrader777',
+    # 'mn_goat_trader'
 ]
 
 
@@ -39,18 +39,16 @@ def get_tickers():
     print(arr_with_all_results)
     return collections.Counter(arr_with_all_results).most_common()
 
+
 def prepare_email():
     top_tickers = get_tickers()[:10]
-    print(top_tickers)
     html_string = '<div><h1>TOP 10</h1><ol>'
-
     for ticker in top_tickers:
-        print(ticker)
-        html_string += '<li><strong>Stock Ticker: %s</strong> <a href=https://stocktwits.com/search?q=%s>StockTwits</a> <a href=https://finance.yahoo.com/quote/%s>Yahoo Finance</a> <a href=https://stockcharts.com/h-sc/ui?s=%s>Stock Charts</a> <a href=https://www.otcmarkets.com/stock/%s/overview>OTC Makets</a></li>' % (ticker[0])
-    html_string += '</ol><button href="https://buildleansaas.gumroad.com/l/FinancialFreedomWithFreelanceWriting">Get The Guide Succint Success In The Stock Market</button></div>'
+        html_string += f'<li><strong>Ticker: {ticker[0]}</strong> <ul><li><a href=https://stocktwits.com/search?q={ticker[0]}>StockTwits</a></li> <li><a href=https://finance.yahoo.com/quote/{ticker[0]}>Yahoo Finance</a></li> <li><a href=https://stockcharts.com/h-sc/ui?s={ticker[0]}>Stock Charts</a></li> <li><a href=https://www.otcmarkets.com/stock/{ticker[0]}/overview>OTC Makets</a></li></ul></li>'
+    html_string += '</ol><a href="https://buildleansaas.gumroad.com/l/FinancialFreedomWithFreelanceWriting">Get The Guide Succint Success In The Stock Market</a></div>'
 
     email_content = {'subject': 'Top OTC Stocks of {}'.format(
-        datetime.today()), 'html': html_string}
+        datetime.today()), 'html': Content("text/html", html_string)}
 
     return email_content
 
@@ -58,27 +56,27 @@ def prepare_email():
 def get_emails():
     # fetch product subscribers from gumroad
     # get subscribed emails
-    emails = ['fraguilar@pm.me', 'fraguilar@protonmail.com',
-              'fernando.aguilar@hotmail.com', 'admin@lightningleads.com', 'au.witherow@gmail.com']
-    return emails()
+    emails = [To('fraguilar@pm.me'), To('fraguilar@protonmail.com'),
+              To('fernando.aguilar@hotmail.com.br'), To('admin@lightningleads.co'), To('au.witherow@gmail.com')]
+    return emails
 
 
 def send_mail():
     email_content = prepare_email()
     message = Mail(
-        from_email=SENDGRID_SINGLE_SENDER,
+        from_email=From(SENDGRID_SINGLE_SENDER, "FRAG"),
         to_emails=get_emails(),
-        subject=email_content.subject,
-        html_content=email_content.html)
+        subject=email_content['subject'],
+        html_content=email_content['html'],
+        is_multiple=True
+    )
     try:
         sg = SendGridAPIClient(SENDGRID_API_KEY)
-        response = sg.send(message)
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
+        response = sg.client.mail.send.post(request_body=message.get())
+        print(response)
+        sys.exit('DONE');
     except Exception as e:
         print(e.message)
-    return get_emails()
 
 
 def cronjob():
@@ -88,4 +86,4 @@ def cronjob():
     """
     print("Cron job is running")
     print("Tick! The time is: %s" % datetime.now())
-    print(send_mail())
+    send_mail()

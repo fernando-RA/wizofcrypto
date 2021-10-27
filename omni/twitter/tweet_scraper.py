@@ -6,16 +6,17 @@ import reticker
 extractor = reticker.TickerExtractor()
 
 def search_from_specific_user(user):
-    maxTweets = 3
+    maxTweets = 10
     tweets_list1 = []
-    for i, tweet in enumerate(sntwitter.TwitterSearchScraper('from:{}'.format(user)).get_items()):
+    print(user)
+    for i, tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:{user}').get_items()):
         if i > maxTweets:
             break
         without_mentions = tweet.content.split("@", 1)[0]
         without_links = without_mentions.split("https://", 1)[0]
         extracted_tickers = extractor.extract(without_links)
         if (len(extracted_tickers) > 0):
-            tweets_list1.append(extracted_tickers)  
+            tweets_list1.append(extracted_tickers)
     return tweets_list1
 
 def search_from_search_query(search_query):
