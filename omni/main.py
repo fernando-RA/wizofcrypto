@@ -3,12 +3,21 @@ from twitter.tweet_scraper import search_from_specific_user
 import reticker
 import collections
 
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 extractor = reticker.TickerExtractor()
 
 arr_of_vip_accs = [
-    "fernand0aguilar",
     "PaikCapital",
+    'mn_goat_trader',
+    'edgarinsider',
+    'GeniusTrader777'
 ]
+
+
+SENDGRID_API_KEY = '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'
+SENDGRID_SINGLE_SENDER = 'fraguilar@pm.me'
 
 
 def count_duplicates(arr):
@@ -27,54 +36,48 @@ def get_tickers():
         for tweet in search_from_specific_user(user):
             for ticker in tweet:
                 arr_with_all_results.append(ticker)
+    print(arr_with_all_results)
     return collections.Counter(arr_with_all_results).most_common()
-    # [('ONE', 4), ('FTM', 3), ('LUNA', 2), ('AVAX', 2), ('SOL', 2), ('SPELL', 2), ('TEST', 1), ('THIS', 1), ('JUST', 1), ('TESTIN', 1), ('CRV', 1), ('GYRO', 1), ('GN', 1), ('GM', 1), ('ETH', 1), ('AXS', 1), ('BTC', 1), ('SYN', 1), ('JOE', 1), ('SCRT', 1), ('ALL', 1), ('TIME', 1), ('HIGHS', 1)]
-
 
 def prepare_email():
-    # top otc stocks of the last 24 hours
+    top_tickers = get_tickers()[:10]
+    print(top_tickers)
+    html_string = '<div><h1>TOP 10</h1><ol>'
 
-    # 1. $TGGI [stocktwits] [yahoo] [stockcharts] [otcmarkets] [twitter]
-    # 2. do it for the scored tickers of the day
+    for ticker in top_tickers:
+        print(ticker)
+        html_string += '<li><strong>Stock Ticker: %s</strong> <a href=https://stocktwits.com/search?q=%s>StockTwits</a> <a href=https://finance.yahoo.com/quote/%s>Yahoo Finance</a> <a href=https://stockcharts.com/h-sc/ui?s=%s>Stock Charts</a> <a href=https://www.otcmarkets.com/stock/%s/overview>OTC Makets</a></li>' % (ticker[0])
+    html_string += '</ol><button href="https://buildleansaas.gumroad.com/l/FinancialFreedomWithFreelanceWriting">Get The Guide Succint Success In The Stock Market</button></div>'
 
-    # get the guide to succinct stock market success on gumroad
-    # presale item <link> | # get your referral link\
-    tickers_dict = [{
-        'name': t[0],
-        'score': t[1],
-        "stocktwits": 'https://stocktwits.com/search?q=' + t[0],
-        "yahoo": 'https://finance.yahoo.com/quote/' + t[0],
-        "stockcharts": 'https://stockcharts.com/h-sc/ui?s=' + t[0],
-        "otcmarkets": f'https://www.otcmarkets.com/stock/{t[0]}/overview',
-    } for t in get_tickers()]
-    # TODO
-        # COMPOSE EMAIL BODY
-        # MAKE A PRETTIFIED VERSION OF AN EMAIL BODY
-        # WRITE HTML BY HAND
-        # ADD THE CTA AND SHIT ONTO THE EMAIL
-    # HEADER -> 
-    #   OTC STOCK WINNER OF THE DAY
-    # BODY -> 
-    #   TOP 5
-    # Scores and LINKS
-    # SHILL BIG ASS CTA IN THE BOTTOM
-    
-    # RETURN ONE SINGLE EMAIL BODY
-    
-    return tickers_dict
+    email_content = {'subject': 'Top OTC Stocks of {}'.format(
+        datetime.today()), 'html': html_string}
+
+    return email_content
 
 
 def get_emails():
     # fetch product subscribers from gumroad
     # get subscribed emails
-    return prepare_email()
+    emails = ['fraguilar@pm.me', 'fraguilar@protonmail.com',
+              'fernando.aguilar@hotmail.com', 'admin@lightningleads.com', 'au.witherow@gmail.com']
+    return emails()
 
 
 def send_mail():
-    # get_emails()
-    # get tickers, prepare email, loop over emails, send them in a batch
-    # sg.send()
-
+    email_content = prepare_email()
+    message = Mail(
+        from_email=SENDGRID_SINGLE_SENDER,
+        to_emails=get_emails(),
+        subject=email_content.subject,
+        html_content=email_content.html)
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e.message)
     return get_emails()
 
 

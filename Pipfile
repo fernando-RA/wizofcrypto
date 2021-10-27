@@ -15,6 +15,7 @@ gunicorn = "*"
 psycopg2 = "*"
 snscrape = {git = "https://github.com/JustAnotherArchivist/snscrape.git"}
 reticker = "*"
+sendgrid = "*"
 
 [dev-packages]
 autopep8 = "*"

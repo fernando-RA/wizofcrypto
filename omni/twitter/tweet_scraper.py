@@ -6,7 +6,7 @@ import reticker
 extractor = reticker.TickerExtractor()
 
 def search_from_specific_user(user):
-    maxTweets = 30
+    maxTweets = 3
     tweets_list1 = []
     for i, tweet in enumerate(sntwitter.TwitterSearchScraper('from:{}'.format(user)).get_items()):
         if i > maxTweets:
