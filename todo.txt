@@ -1,0 +1,3 @@
+save pair ticker and label them as otc, big board, crypto in the psql db
+save user and uid in the db
+

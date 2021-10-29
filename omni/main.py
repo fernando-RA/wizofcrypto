@@ -3,6 +3,7 @@ from twitter.tweet_scraper import search_from_specific_user
 import reticker
 import collections
 import sys
+import requests
 
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Personalization, Email, Content, To, From
@@ -12,12 +13,25 @@ extractor = reticker.TickerExtractor()
 arr_of_vip_accs = [
     'edgarinsider',
     'GeniusTrader777',
-    # 'mn_goat_trader'
+    'stockballa',
+    'ClairvoyantINVT',
+    'WhalePenny',
+    'SaraGoingUp',
+    'Jcazz17',
+    'greatstockpicks',
+    'FatCash7',
+    'ArrrgToTheMoon',
+    'TESLAQUEEN10',
+    'JohnRSpano1',
+    'ecgreendays',
+    'AngryRed316'
 ]
 
 
 SENDGRID_API_KEY = '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'
 SENDGRID_SINGLE_SENDER = 'fraguilar@pm.me'
+GUMROAD_API_KEY='6jW1pBnGdaQ6LfDb-SuGuta5FLSyrDq3Rf5_DdxPZ18'
+GUMROAD_PRODUCT_ID='pnteL6xVWiz26diThu2KsQ=='
 
 
 def count_duplicates(arr):
@@ -36,7 +50,7 @@ def get_tickers():
         for tweet in search_from_specific_user(user):
             for ticker in tweet:
                 arr_with_all_results.append(ticker)
-    print(arr_with_all_results)
+    print('arr_with_all_results',arr_with_all_results)
     return collections.Counter(arr_with_all_results).most_common()
 
 
@@ -54,10 +68,16 @@ def prepare_email():
 
 
 def get_emails():
-    # fetch product subscribers from gumroad
-    # get subscribed emails
     emails = [To('fraguilar@pm.me'), To('fraguilar@protonmail.com'),
               To('fernando.aguilar@hotmail.com.br'), To('admin@lightningleads.co'), To('au.witherow@gmail.com')]
+    
+    url_endpoint = f'https://api.gumroad.com/v2/products/{GUMROAD_PRODUCT_ID}/subscribers'
+    subscibers = requests.get(url_endpoint, params={"access_token":GUMROAD_API_KEY}).json().get('subscribers')
+    for subscriber in subscibers:
+        emails.append(subscriber.get('email'))
+    
+    print('subs', emails)
+    
     return emails
 
 
@@ -71,19 +91,18 @@ def send_mail():
         is_multiple=True
     )
     try:
+        print('sending email', email_content)
         sg = SendGridAPIClient(SENDGRID_API_KEY)
         response = sg.client.mail.send.post(request_body=message.get())
-        print(response)
-        sys.exit('DONE');
+        print('EMAIL SENT', response)
     except Exception as e:
-        print(e.message)
+        print('Error sending email')
+        print(e)
 
 
 def cronjob():
-    """
-    Main cron job.
-    The main cronjob to be run continuously.
-    """
     print("Cron job is running")
     print("Tick! The time is: %s" % datetime.now())
     send_mail()
+
+cronjob()

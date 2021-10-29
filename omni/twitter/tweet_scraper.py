@@ -6,7 +6,7 @@ import reticker
 extractor = reticker.TickerExtractor()
 
 def search_from_specific_user(user):
-    maxTweets = 10
+    maxTweets = 20
     tweets_list1 = []
     print(user)
     for i, tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:{user}').get_items()):
@@ -18,15 +18,3 @@ def search_from_specific_user(user):
         if (len(extracted_tickers) > 0):
             tweets_list1.append(extracted_tickers)
     return tweets_list1
-
-def search_from_search_query(search_query):
-    
-    tweets_list2 = []
-    for i, tweet in enumerate(sntwitter.TwitterSearchScraper(search_query).get_items()):
-        if i > 500:
-            break
-        tweets_list2.append(
-            [tweet.date, tweet.id, tweet.content, tweet.user.username])
-
-    # Creating a dataframe from the tweets list above
-    # TODO 2 -> https://stackoverflow.com/a/66310138
