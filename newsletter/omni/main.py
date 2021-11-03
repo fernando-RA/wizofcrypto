@@ -27,13 +27,6 @@ arr_of_vip_accs = [
     'AngryRed316'
 ]
 
-
-SENDGRID_API_KEY = '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'
-SENDGRID_SINGLE_SENDER = 'fraguilar@pm.me'
-GUMROAD_API_KEY='6jW1pBnGdaQ6LfDb-SuGuta5FLSyrDq3Rf5_DdxPZ18'
-GUMROAD_PRODUCT_ID='pnteL6xVWiz26diThu2KsQ=='
-
-
 def count_duplicates(arr):
     count = {}
     for i in arr:

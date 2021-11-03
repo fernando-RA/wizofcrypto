@@ -1,8 +1,0 @@
-{
-  "name": "Omni",
-  "description": "Python Architecture for Build Lean SaaS.",
-  "image": "heroku/python",
-  "repository": "https://github.com/lightning-leads/omni",
-  "keywords": ["python"],
-  "addons": ["heroku-postgresql"]
-}
